@@ -1,0 +1,18 @@
+.ui {
+    .banner {
+        margin: 0px 10%;
+        display: flex;
+        flex-direction: column; // Nếu bạn muốn căn giữa theo chiều dọc
+        align-items: center; // Căn giữa theo chiều ngang
+        justify-content: center; // Căn giữa theo chiều dọc
+        
+        .heading {
+            font-size: 14px;
+        }
+        .change-banner {
+            .img {
+                width: 80%;
+            }
+        }
+    }
+}

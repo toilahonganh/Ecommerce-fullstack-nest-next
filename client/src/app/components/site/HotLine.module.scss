@@ -1,0 +1,18 @@
+.hotline {
+    position: fixed;
+    left: 95%;
+    top: 82%;
+    width: 40px;
+    padding: 7px;
+    background-color: #222222;
+    border-radius: 50px;
+
+    &:hover {
+        background-color: #015bb3;
+    }
+    .icon {
+        font-size: 24px;
+        color: #ffffff;
+    }
+
+}

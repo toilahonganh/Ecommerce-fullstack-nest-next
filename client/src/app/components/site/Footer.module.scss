@@ -1,0 +1,54 @@
+.footer {
+    width: 100%;
+    height: 350px;
+    display: flex;
+    background-color: #222222;
+
+    .left {
+        flex: 2;
+    }
+
+    .auth {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+
+        .login {
+            width: 100%;
+            display: flex;
+            margin: 20px;
+
+            form {
+                display: flex;
+                justify-content: space-between;
+                .navbar_profile {
+                    width: 80px;
+                    img {
+                        border-radius: 25px;
+                    }
+                }
+                .input {
+                    width: 100%;
+                    font-size: 14px;
+                    padding: 0px 100px 0px 20px;
+                    color: #ffffff;
+                    outline: none;
+                    border: none;
+                    background-color: #363636;
+
+                    &:placeholder-shown {
+                        font-size: 14px;
+                    }
+                }
+
+                .btn_send {
+                    padding: 15px;
+                    font-size: 12px;
+                    text-transform: uppercase;
+                    color: #ffffff;
+                    background-color: #991116;
+                }
+            }
+        }
+    }
+}

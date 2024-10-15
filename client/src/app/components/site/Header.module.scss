@@ -1,0 +1,118 @@
+$border-color: #2277cc;
+
+.header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 180px;
+    z-index: 999;
+    opacity: 1000;
+    align-items: center;
+    background-color: #ffffff;
+    transition: background-color 0.3s;
+    box-shadow: 0 0px 8px rgba(0, 0, 0, 0.5);
+
+    .sticky {
+        height: 40px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .actions {
+        margin: 0px 10%;
+        display: flex;
+        justify-content: space-between;
+
+        .logo {
+            img {
+                width: 150px;
+                height: 44px;
+            }
+        }
+
+        .search {
+            width: 500px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-items: center;
+            border-radius: 5px;
+            border: 2px solid $border-color;
+
+            input {
+                padding: 0px 15px;
+                width: 100%;
+                border: none;
+                outline: none;
+                font-size: 13px;
+
+                &:placeholder-shown {
+                    font-size: 13px;
+                }
+            }
+
+            .icon {
+                font-size: 25px;
+            }
+        }
+
+        .contact {
+            display: flex;
+            justify-content: space-between;
+
+            .favorite {
+                .icon {
+                    font-size: 30px;
+                }
+            }
+
+            .carts {
+                .icon {
+                    font-size: 30px;
+                }
+            }
+        }
+    }
+
+    .navbar_links {
+        flex: 1;
+        margin: 0px 25%;
+        margin-top: 25px;
+
+        .navList {
+            width: 100%;
+            height: 80px;
+            gap: 10px;
+            display: flex;
+            list-style-type: none;
+            z-index: 1000;
+
+            li, .nav_dropdown{
+                width: 90px;
+
+                a {
+                    font-size: 14px;
+                    font-weight: 500;
+                    border-radius: 2px;
+                    text-decoration: none;
+                    color: #000000;
+                    font-weight: 600;
+                    transition: color 0.3s;
+
+                    &:hover {
+                        color: #f1784f;
+                    }
+                }
+            }
+
+            .active {
+                color: #f1784f;
+            }
+        }
+    }
+
+    .nav_logo {
+        flex: 1;
+    }
+}

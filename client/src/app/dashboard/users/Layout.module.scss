@@ -1,0 +1,70 @@
+.management {
+    display: flex;
+    margin: 50px 5%;
+    font-family: "geistSansFont", Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, arial;
+
+    .management_navbar {
+        flex: 0.5;
+        width: 100%;
+        height: 100vh;
+        // border-right: 1px solid rgba($color: #000000, $alpha: 0.2);
+
+        .navbar_title {
+            display: flex;
+            align-items: center;
+
+
+            .icon {
+                font-size: 24px;
+                padding: 10px;
+            }
+
+            .title {
+                // color: #5c5c5c;
+                font-size: 14px;
+                font-weight: 600;
+            }
+        }
+
+        .navbar_list {
+            .ul {
+                list-style: none;
+                .li_collections, .li_users {
+                    // color: #666666;
+                    font-size: 14px;
+                    font-weight: 600;
+                    .ul_collections, .ul_users{
+                        list-style: none;
+                        margin-left: 30px;
+                        border-left: 1px solid rgba($color: #000000, $alpha: 0.2);
+                        li {
+                            padding: 8px;
+                            // color: #666666;
+                            font-weight: 500;
+                        }
+                    }
+                }
+                a {
+                    text-decoration: none; 
+                    color: inherit;
+                    &:hover {
+                        color: #4682B4; // Tùy chỉnh màu khi hover nếu cần
+                    }
+                }
+                .active {
+                    color: #4682B4; 
+                }
+
+                
+            }
+        }
+    }
+
+    .management_outlet {
+        align-items: center;
+        justify-content: center;
+        flex: 2;
+        width: 100%;
+        height: 100vh;
+    }
+}

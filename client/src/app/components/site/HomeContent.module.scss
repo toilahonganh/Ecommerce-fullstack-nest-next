@@ -1,0 +1,111 @@
+.content {
+    display: flex;
+    margin: 0px 5%;
+    
+    // Left
+    .content_left {
+        flex: 1;
+        margin-top: 20px;
+        display: flex; // Thêm flex để căn giữa
+        flex-direction: column; // Căn theo chiều dọc
+        align-items: center; // Căn giữa theo chiều ngang
+        .map {
+             padding: 20px 0px;
+            .iframe {
+                width: 100%;
+            }
+        }
+        .filter {
+            padding: 20px;
+            width: 100%; // Đặt chiều rộng cho phần filter
+            // background-color: #ddebfb; // Thêm màu nền
+            border-radius: 8px; // Bo góc
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); // Thêm bóng
+
+            .search {
+                display: flex; // Thay đổi để sử dụng flexbox
+                justify-content: space-between;
+                align-items: center;
+                width: 100%; // Căn giữa 100%
+                border: 1px solid rgba($color: #000000, $alpha: 0.6);
+                padding: 10px; // Thay đổi padding
+                border-radius: 5px; // Bo góc
+
+                input {
+                    font-size: 14px;
+                    border: none;
+                    outline: none;
+                    width: 70%; // Căn chỉnh chiều rộng input
+                    &:placeholder-shown {
+                        font-size: 14px;
+                    }
+                }
+
+                button {
+                    background-color: #016ce4; // Thay đổi màu nền cho nút
+                    color: white; // Đặt màu chữ trắng
+                    border: none; // Xóa border
+                    border-radius: 5px; // Bo góc
+                    padding: 5px 10px; // Thêm padding
+                    cursor: pointer; // Thay đổi con trỏ
+                    transition: background-color 0.3s; // Thêm hiệu ứng chuyển đổi
+
+                    &:hover {
+                        background-color: #005bb5; // Màu nền khi hover
+                    }
+                }
+            }
+
+            .checkboxGroup {
+                margin-top: 20px; // Thêm khoảng cách
+                display: flex;
+                flex-wrap: wrap; // Cho phép xuống dòng
+                justify-content: space-between; // Căn đều các checkbox
+
+                .checkbox {
+                    flex: 1 1 45%; // Thay đổi flex để căn chỉnh checkbox
+                    display: flex;
+                    align-items: center;
+                    margin: 10px 0; // Thêm khoảng cách giữa các checkbox
+
+                    label {
+                        gap: 10px; // Thêm khoảng cách
+                        font-size: 14px;
+                        cursor: pointer; // Thay đổi con trỏ
+                    }
+                }
+            }
+        }
+    }
+    // right
+    .content_right {
+        flex: 1;
+        .hotel {
+            .hotelCards {
+                display: flex;
+            }
+        }
+
+        .divide_page {
+            margin: 20px 20%;
+            display: flex;
+            justify-content: space-between;
+
+            .previous,
+            .next {
+                align-items: center;
+                display: flex;
+                padding: 10px 15px; // Thêm padding cho nút
+                border: 1px solid #016ce4; // Đặt border cho nút
+                color: #016ce4; // Màu chữ cho nút
+                border-radius: 5px; // Bo góc
+
+                &:hover {
+                    background-color: #e7f1ff; // Màu nền khi hover
+                    color: #005bb5; // Màu chữ khi hover
+                    text-decoration: underline; // Gạch chân
+                }
+            }
+        }
+    }
+}

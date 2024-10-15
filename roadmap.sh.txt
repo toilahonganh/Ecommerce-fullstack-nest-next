@@ -1,0 +1,54 @@
+/** BACKEND  */
+PostgreSQL
+Redis
+Server Side 
+CDN
+Client Side
+JWT, Oauth
+Basic Authentication
+Token Authentication
+Cookie Based Auth
+
+Integration Testing
+Unit Testing
+Functional Testing
+
+ORMs
+ACID
+Transactions
+N + 1 Problem
+Normalization
+Failure Modes
+Profiling Perfor
+Migrations
+
+CORS
+HTTPS
+OWASP Risks
+SSL/TLS
+Server Security
+CSP
+
+Database Indexes
+Monolithic Apps
+SOA
+Serverless
+Service Mesh
+Twelve Factor Apps
+
+GOF Design Patterns
+Domain Driven Design
+Test Driven Developer
+
+Nginx
+RabbitMQ
+Kafka
+
+Server Sent Events
+WebSockets
+Long Polling
+Short Polling
+
+MongoDB
+Redis
+Firebase 
