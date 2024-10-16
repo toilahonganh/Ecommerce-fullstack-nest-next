@@ -2,9 +2,9 @@
 import { useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { IoChatboxOutline } from "react-icons/io5";
 import { FiSend } from "react-icons/fi";
 import { MdKeyboardArrowUp } from "react-icons/md";
+import { IoChatbubbleOutline } from "react-icons/io5";
 import styles from "./ChatBox.module.scss";
 
 
@@ -35,7 +35,7 @@ export default function ChatBox() {
         <div>
             <ToastContainer /> {/* Thêm ToastContainer để hiển thị thông báo */}
             <div className={styles.chatbox} onClick={clickChatBox}>
-                <IoChatboxOutline className={styles.chatbox_icon} />
+                <IoChatbubbleOutline className={styles.chatbox_icon} />
             </div>
             {isOpen && (
                 <div className={styles.chatbox_content}>

@@ -36,8 +36,8 @@ export default function LoginPage() {
             
             notifyToastSuccess(`Login successfully!`);
             setTimeout(() => {
-                router.push('/site'); 
-            }, 1500)
+                router.push('/site/products'); 
+            }, 1200)
 
         } catch (error) {
             notifyToastError("Login error");

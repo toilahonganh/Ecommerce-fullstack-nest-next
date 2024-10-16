@@ -57,5 +57,21 @@ export class ProductController {
     ): Promise<Product> {
         return await this.productService.deleteProduct(id);
     }
+
+  @Get()
+  async searchProducts(@Query('query') query: string): Promise<Product[]> {
+    if (!query) {
+      throw new HttpException('Query parameter must be provided', HttpStatus.BAD_REQUEST);
+    }
+    try {
+      const products = await this.productService.findAllBySearch(query);
+      if (products.length === 0) {
+        throw new HttpException('No products found', HttpStatus.NOT_FOUND);
+      }
+      return products;
+    } catch (error) {
+      throw new HttpException('Error searching for products', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
     
 }

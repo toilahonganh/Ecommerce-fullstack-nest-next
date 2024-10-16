@@ -3,18 +3,13 @@
     left: 95%;
     top: 90%;
     width: 40px;
-    padding: 7px;
-    background-color: #222222;
+    height: 40px;
+    background-color: #015bb3;
     border-radius: 50px;
-
-    &:hover {
-        background-color: #015bb3;
-    }
     
     .chatbox_icon {
-        font-size: 25px;
+        font-size: 40px;
         color: #ffffff;
-
     }
 }
 .chatbox_content {

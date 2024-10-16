@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import styles from "./Products.module.scss";
+import { Key, useEffect, useState } from "react";
 import axios from "axios";
-import { notifyToastError } from "@/app/utils/NotifyToast";
-
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+import Cookies from 'js-cookie';
+import { ToastContainer } from "react-toastify";
+import { notifyToastError, notifyToastSuccess } from "@/app/utils/NotifyToast";
+import { CiHeart } from "react-icons/ci";
+import styles from "./Products.module.scss";
 
 export default function ProductPage() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -13,16 +14,47 @@ export default function ProductPage() {
     const [searchQuery, setSearchQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
+    const [authData, setAuthData] = useState<any>(null);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const limit = 5;
 
     const [quickView, setQuickView] = useState<any | null>(null);
     const [overlayVisible, setOverlayVisible] = useState(false);
 
     const colors = ["Black", "White"];
-
     const [productData, setProductData] = useState({
         color: []
     });
+
+    const [quantity, setQuantity] = useState(1); 
+
+    useEffect(() => {
+        fetchProducts(currentPage);
+
+        const accessToken = Cookies.get('accessToken');
+
+        const fetchData = async () => {
+            try {
+                const response = await axios.post(`${process.env.NEXT_PUBLIC_ORIGIN}/auth/decode`, {
+                    accessToken,
+                });
+                console.log(response.data._id);
+                
+                const { password, ...userData } = response.data; 
+                setAuthData(userData);
+                setIsAuthenticated(!!userData);
+            } catch (error) {
+                console.error("Error decoding token:", error);
+                setIsAuthenticated(false);
+            }
+        };
+
+        fetchData(); 
+    }, [currentPage]);
+
+    const handleFavourite = () =>{
+        notifyToastSuccess(`Added to Favourite!`)
+    } 
     const handleColorChange = (color: string) => {
         setProductData((prev: any) => {
             const isSelected = prev.color.includes(color);
@@ -38,8 +70,32 @@ export default function ProductPage() {
         if (product) {
             setQuickView(product);
             setOverlayVisible(true);
+            setQuantity(1); // Reset lại số lượng khi mở Quick View
         }
     };
+
+    const handleAddCart = async (userId: string, productId: string, quantity: number) => {
+        if (!userId) {
+            notifyToastError('Please login to add products to the cart.');
+            return;
+        }
+    
+        try {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_ORIGIN}/cart`, {
+                user_id: userId, // Ensure you are using the right keys
+                product_id: productId,
+                quantity,
+            });
+            console.log('User ID:', authData._id);
+            console.log('Product ID:', quickView._id);
+            console.log(response.data);
+            notifyToastSuccess(`Added successfully ${quickView.name}`)
+        } catch (error) {
+            notifyToastError('Error adding product to the cart');
+            console.error('Error adding to cart:', error);
+        }
+    }
+    
 
     const fetchProducts = async (page: number) => {
         try {
@@ -59,16 +115,27 @@ export default function ProductPage() {
         product.category.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    useEffect(() => {
-        fetchProducts(currentPage);
-    }, [currentPage]);
+    // Hàm điều chỉnh số lượng
+    const handleQuantityChange = (type: "increase" | "decrease") => {
+        setQuantity(prev => {
+            if (type === "increase") return prev + 1;
+            if (type === "decrease" && prev > 1) return prev - 1; // Giảm không cho xuống dưới 1
+            return prev;
+        });
+    };
+
+
 
     return (
-        <div>
+        <div className={styles.container}>
+            <ToastContainer />
             <div className={styles.product}>
                 {filteredProducts.map((product) => (
                     <div className={styles.product_container} key={product._id}>
                         <div className={styles.image}>
+                        <div className={styles.favourite} onClick={handleFavourite}>
+                                <p><CiHeart className={styles.icon} /></p>
+                            </div>
                             <img src={product.images[0]} alt={`${product.name}'s image`} />
                             <div className={styles.quick_view} onClick={() => handleQuickView(product._id)}>
                                 <p>Quick view</p>
@@ -89,6 +156,59 @@ export default function ProductPage() {
                 ))}
             </div>
 
+            <div className={styles.product}>
+                {filteredProducts.map((product) => (
+                    <div className={styles.product_container} key={product._id}>
+                        <div className={styles.image}>
+                        <div className={styles.favourite} onClick={handleFavourite}>
+                                <p><CiHeart className={styles.icon} /></p>
+                            </div>
+                            <img src={product.images[0]} alt={`${product.name}'s image`} />
+                            <div className={styles.quick_view} onClick={() => handleQuickView(product._id)}>
+                                <p>Quick view</p>
+                            </div>
+                        </div>
+                        <div className={styles.product_info}>
+                            <div className={styles.category}>
+                                <p>{product.category}</p>
+                            </div>
+                            <div className={styles.name}>
+                                <p>{product.name}</p>
+                            </div>
+                            <div className={styles.price}>
+                                <p>{product.price}.00 $</p>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            <div className={styles.product}>
+                {filteredProducts.map((product) => (
+                    <div className={styles.product_container} key={product._id}>
+                        <div className={styles.image}>
+                        <div className={styles.favourite} onClick={handleFavourite}>
+                                <p><CiHeart className={styles.icon} /></p>
+                            </div>
+                            <img src={product.images[0]} alt={`${product.name}'s image`} />
+                            <div className={styles.quick_view} onClick={() => handleQuickView(product._id)}>
+                                <p>Quick view</p>
+                            </div>
+                        </div>
+                        <div className={styles.product_info}>
+                            <div className={styles.category}>
+                                <p>{product.category}</p>
+                            </div>
+                            <div className={styles.name}>
+                                <p>{product.name}</p>
+                            </div>
+                            <div className={styles.price}>
+                                <p>{product.price}.00 $</p>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
 
             {overlayVisible && quickView && (
                 <div className={styles.overlay}>
@@ -150,7 +270,7 @@ export default function ProductPage() {
                                     <p>Sizes:</p>
                                     {quickView.size && quickView.size.length > 0 ? (
                                         <div className={styles.sizeOptions}>
-                                            {quickView.size.map((size, index) => (
+                                            {quickView.size.map((size: string, index: Key) => (
                                                 <span key={index} className={styles.sizeOption}>
                                                     {size}
                                                 </span>
@@ -161,9 +281,15 @@ export default function ProductPage() {
                                     )}
                                 </div>
 
+                                {/* Thêm phần điều chỉnh số lượng */}
+                                <div className={styles.quantityControl}>
+                                    <button onClick={() => handleQuantityChange("decrease")}>-</button>
+                                    <p>{quantity}</p>
+                                    <button onClick={() => handleQuantityChange("increase")}>+</button>
+                                </div>
+
                                 <div className={styles.addCart}>
-                                    <p>1</p>
-                                    <button onClick={() => setOverlayVisible(false)}>Add to cart</button>
+                                    <button onClick={() => handleAddCart(authData._id, quickView._id, quantity)}>Add to cart</button>
                                 </div>
                                 <button onClick={() => setOverlayVisible(false)}>Close</button>
                             </div>
@@ -171,7 +297,6 @@ export default function ProductPage() {
                     </div>
                 </div>
             )}
-
         </div>
-    )
+    );
 }

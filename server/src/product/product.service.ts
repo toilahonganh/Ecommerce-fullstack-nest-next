@@ -8,7 +8,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 export class ProductService {
   constructor(
     @InjectModel(Product.name) private productModel: Model<ProductDocument>
-  ) {}
+  ) { }
   /**
    * @param createShirtDto 
    * @returns 
@@ -45,7 +45,7 @@ export class ProductService {
     const products = await this.productModel.find({ category });
     return products;
   }
-  
+
 
   async editProduct(id: string, updateData: Partial<Product>): Promise<Product> {
     const response = await this.productModel.findByIdAndUpdate(id, updateData, { new: true });
@@ -56,4 +56,18 @@ export class ProductService {
     const response = await this.productModel.findByIdAndDelete(id, { new: true });
     return response;
   }
+
+  async findAllBySearch(searchParam: string): Promise<Product[]> {
+    const response = await this.productModel.find({
+      $or: [
+        { name: { $regex: searchParam, $options: 'i' } },
+        { category: { $regex: searchParam, $options: 'i' } }
+      ]
+    })
+    .limit(3)
+    .lean();
+
+    return response;
+  }
 }
+

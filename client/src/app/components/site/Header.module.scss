@@ -13,10 +13,41 @@ $border-color: #2277cc;
     transition: background-color 0.3s;
     box-shadow: 0 0px 8px rgba(0, 0, 0, 0.5);
 
+    .shopping {
+        position: relative;
+        left: 0;
+        width: 400px;
+    }
+
     .sticky {
+        display: flex;
         height: 40px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         margin-bottom: 20px;
+        align-items: center;
+        justify-content: space-around;
+
+        .welcome {
+            font-size: 13px;
+        }
+
+        .auth {
+            align-items: center;
+
+            .icon {
+                font-size: 18px;
+            }
+
+            font-size: 13px;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        .language {
+            font-size: 13px;
+        }
     }
 
     .actions {
@@ -31,40 +62,124 @@ $border-color: #2277cc;
             }
         }
 
-        .search {
+        .search_container {
             width: 500px;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-items: center;
-            border-radius: 5px;
-            border: 2px solid $border-color;
 
-            input {
-                padding: 0px 15px;
+            .search {
                 width: 100%;
-                border: none;
-                outline: none;
-                font-size: 13px;
+                height: 45px;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-items: center;
+                border-radius: 5px;
+                border: 2px solid $border-color;
 
-                &:placeholder-shown {
+                input {
+                    padding: 0px 15px;
+                    width: 100%;
+                    border: none;
+                    outline: none;
                     font-size: 13px;
+
+                    &:placeholder-shown {
+                        font-size: 13px;
+                    }
+                }
+
+                .icon {
+                    font-size: 25px;
                 }
             }
 
-            .icon {
-                font-size: 25px;
+            .searchDiv {
+                display: none;
+                position: absolute;
+                width: 500px;
+                height: 500px;
+                background-color: #ffffff;
+                border: 1px solid rgba(0, 0, 0, 0.1);
+                z-index: 1001;
+
+                &.visible {
+                    display: block; // Hiện khi có lớp visible
+                }
+
+                .product_search {
+                    border: 1px solid rgba(0, 0, 0, 0.1);
+                    display: flex;
+                    padding: 10px;
+                    overflow-y: auto;
+                    scrollbar-width: none;
+                    -ms-overflow-style: none;
+
+                    .product_image {
+                        img {
+                            width: 100px;
+                        }
+                    }
+
+                    .product_detail {
+                        margin-left: 10px;
+
+                        .info {
+                            flex-direction: column;
+
+                            p {
+                                font-size: 14px;
+                                font-weight: 200;
+                                margin: 0; // Bỏ margin cho p
+                            }
+
+                            span {
+                                color: rgba(0, 0, 0, 0.5);
+                            }
+                        }
+
+                        .action {
+                            button {
+                                font-size: 10px;
+                                text-transform: uppercase;
+                                margin-top: 50px;
+                                border: none;
+                                border-radius: 5px;
+                                color: #ffffff;
+                                padding: 6px;
+                                background-color: #2277cc;
+                            }
+                            .quick_view {
+                                margin-left: 10px;
+                                &:hover {
+                                    scale: 1.025;
+                                }
+                            }
+                            .add_cart {
+                                &:hover {
+                                    scale: 1.025;
+                                } 
+                            }
+                        }
+
+                        font-size: 12px;
+                    }
+                }
             }
         }
 
         .contact {
             display: flex;
+            align-items: center;
             justify-content: space-between;
 
             .favorite {
                 .icon {
                     font-size: 30px;
                 }
+            }
+
+            .title {
+                margin: 0 10px;
+                font-size: 12px;
             }
 
             .carts {
@@ -88,7 +203,8 @@ $border-color: #2277cc;
             list-style-type: none;
             z-index: 1000;
 
-            li, .nav_dropdown{
+            li,
+            .nav_dropdown {
                 width: 90px;
 
                 a {
