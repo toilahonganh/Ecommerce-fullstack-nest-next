@@ -99,6 +99,19 @@ export default function Header() {
             console.error('Error adding to cart:', error); // Log error
         }
     }
+    // Handle logout
+    const handleLogout = async () => {
+        try {
+            Cookies.remove('accessToken'); 
+            Cookies.remove('rereshToken'); 
+            setAuthData(null);
+            setIsAuthenticated(false); 
+            notifyToastSuccess('You have logged out successfully.');
+        } catch (error) {
+            notifyToastError('Error logging out'); 
+            console.error('Error during logout:', error);
+        }
+    };
 
     // Toggle cart visibility
     const toggleCart = () => {
@@ -109,12 +122,9 @@ export default function Header() {
         <header className={styles.header}>
             <nav className={styles.nav_logo}></nav>
             <div className={styles.sticky}>
-                <div className={styles.welcome}>
-                    <p>Welcome to Riode store message or remove it!</p>
-                </div>
                 <div className={styles.auth}>
-                    <a>Register | </a>
-                    <a>Login</a>
+                   {/* <span> Welcome {authData.name} to Riode store | </span> */}
+                   <span onClick={handleLogout}>Logout</span>
                 </div>
             </div>
 

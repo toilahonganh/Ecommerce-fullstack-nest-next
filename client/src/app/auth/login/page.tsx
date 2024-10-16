@@ -49,8 +49,11 @@ export default function LoginPage() {
         <div className={styles.container}>
             <ToastContainer />
             <div className={styles.formContainer}>
+                <div className={styles.logo}>
+                    <img src="https://d-themes.com/wordpress/riode/elements/wp-content/uploads/sites/3/2020/09/logo.png" alt="logo" />
+                </div>
                 <form className={styles.registrationForm} onSubmit={handleSubmit}>
-                    <h2>Login</h2>
+                    {/* <h2>Login</h2> */}
                     <div className={styles.formGroup}>
                         <MdOutlineEmail />
                         <input

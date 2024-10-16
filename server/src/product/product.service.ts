@@ -35,6 +35,16 @@ export class ProductService {
     };
   }
 
+  async findAll() {
+    const products = await this.productModel.find().exec();
+    const totalProducts = await this.productModel.countDocuments();
+
+    return {
+      products,
+      totalProducts
+    };
+  }
+
   /**
    * 
    * @param id 

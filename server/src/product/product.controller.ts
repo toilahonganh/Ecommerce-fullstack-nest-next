@@ -32,6 +32,21 @@ export class ProductController {
     }
   }
 
+  @Get('get-all')
+  async getAll(
+  ) {
+    try {
+      const { products, totalProducts} = await this.productService.findAll();
+      
+      return {
+        products,
+        totalProducts,
+      };
+    } catch (error) {
+      throw new HttpException('Error fetching products', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   @Get('get-products-category')
   async getProductByCategory(
     @Query('category') category: string  

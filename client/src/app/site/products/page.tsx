@@ -16,7 +16,7 @@ export default function ProductPage() {
     const [totalPages, setTotalPages] = useState(0);
     const [authData, setAuthData] = useState<any>(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const limit = 5;
+    const limit = 10;
 
     const [quickView, setQuickView] = useState<any | null>(null);
     const [overlayVisible, setOverlayVisible] = useState(false);
@@ -99,9 +99,8 @@ export default function ProductPage() {
 
     const fetchProducts = async (page: number) => {
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_ORIGIN}/product/get-all-products`, {
-                params: { page, limit },
-            });
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_ORIGIN}/product/get-all`);
+            console.log(response.data.products)
             setProductInfo(response.data.products);
             setTotalPages(response.data.totalPages);
         } catch (error) {
@@ -123,7 +122,6 @@ export default function ProductPage() {
             return prev;
         });
     };
-
 
 
     return (
@@ -156,7 +154,7 @@ export default function ProductPage() {
                 ))}
             </div>
 
-            <div className={styles.product}>
+            {/* <div className={styles.product}>
                 {filteredProducts.map((product) => (
                     <div className={styles.product_container} key={product._id}>
                         <div className={styles.image}>
@@ -208,7 +206,7 @@ export default function ProductPage() {
                         </div>
                     </div>
                 ))}
-            </div>
+            </div> */}
 
             {overlayVisible && quickView && (
                 <div className={styles.overlay}>

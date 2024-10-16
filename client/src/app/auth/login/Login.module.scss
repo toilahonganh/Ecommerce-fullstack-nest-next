@@ -1,82 +1,97 @@
 .container {
-    width: 650px;
-    height: 400px;
+    width: 500px; 
+    height: 450px;
+    padding: 20px; // Thêm padding để tạo không gian
     border-radius: 8px;
     align-items: center;
     background: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    font-family: "geistSansFont", Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Arial;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    font-family: "geistSansFont", Arial, sans-serif; // Sử dụng font sans-serif cho sự đồng bộ
+    margin: auto; // Giữa màn hình
 
     .formContainer {
+        .logo {
+            margin-top: 70px;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            img {
+                width: 120px; // Tăng kích thước logo một chút
+            }
+        }
         .registrationForm {
-            margin: 80px 100px;
+            display: flex;
+            flex-direction: column; // Sắp xếp các phần tử theo chiều dọc
+            margin: 0 20px; // Thay đổi margin để tạo không gian bên ngoài
             h2 {
                 text-align: center;
                 margin-bottom: 20px;
-                font-size: 24px;
-                font-weight: bold;
+                font-size: 26px; // Tăng kích thước tiêu đề
+                font-weight: 700; // Đậm hơn
+                color: #333; // Tối hơn để dễ đọc
             }
 
             .formGroup {
                 font-size: 16px;
                 display: flex;
-                border-bottom: 1px solid #000000;
-                margin-bottom: 15px;
                 align-items: center;
+                border-bottom: 2px solid #6dabe4; // Đổi sang màu sắc nhẹ nhàng hơn
+                margin-bottom: 20px; // Tăng khoảng cách giữa các trường
+                padding-bottom: 5px; // Thêm padding dưới cùng
 
                 input {
-                    font-size: 14px;
+                    font-size: 16px;
                     width: 100%;
                     padding: 10px;
                     border: none;
                     outline: none;
-                    transition: border-color 0.3s ease; // Thêm hiệu ứng chuyển tiếp
+                    transition: border-color 0.3s ease;
+                    border-bottom: 2px solid transparent; // Thay đổi hiệu ứng
 
                     &::placeholder {
                         color: #c4c4c4;
                         font-size: 14px;
                     }
 
-                    &:focus {
-                        border-color: #000000; // Thay đổi màu sắc khi focus
-                    }
-
-                    &:hover {
-                        border-color: #6dabe4; // Thay đổi màu sắc khi hover
-                    }
+            
                 }
             }
         }
 
         .formGroup_checkbox {
             display: flex;
-            margin: 20px 0px;
+            align-items: center; // Căn giữa checkbox và label
+            margin: 20px 0;
+
+            input {
+                margin-right: 10px; // Tạo khoảng cách giữa checkbox và label
+            }
 
             span {
-                font-size: 12px;
+                font-size: 14px; // Đổi sang kích thước lớn hơn
             }
         }
 
         .submitBtn {
             background-color: #6dabe4;
             color: white;
-            padding: 10px;
+            padding: 12px; // Tăng padding để tạo cảm giác dễ nhấn
             border: none;
             border-radius: 4px;
             cursor: pointer;
             width: 100%;
-            margin-bottom: 10px;
+            margin-top: 20px; // Tạo khoảng cách giữa nút và trường trên
 
             &:hover {
-                background-color: #004494;
+                background-color: #004494; // Đậm hơn khi hover
             }
         }
 
         .error {
-            color: red; // Màu sắc cho thông báo lỗi
+            color: red;
             font-size: 14px;
             margin-top: 10px;
-            text-align: center; // Căn giữa thông báo lỗi
+            text-align: center;
         }
     }
 }

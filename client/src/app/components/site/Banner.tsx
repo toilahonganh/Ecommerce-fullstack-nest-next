@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './Banner.module.scss';
 
 interface BannerProps {
-    images: string[]; 
+    images: string; 
     title: string;
     subtitle?: string; 
 }
