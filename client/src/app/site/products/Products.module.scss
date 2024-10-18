@@ -260,6 +260,9 @@
                             font-weight: 600;
                             margin-bottom: 5px;
                         }
+                        &.selected {
+                            border-color: #1E90FF;
+                        }
 
                         .sizeOptions {
                             display: flex;
@@ -275,6 +278,12 @@
                                 &:hover {
                                     background-color: #e0e0e0; // Thay đổi màu nền khi hover
                                 }
+                                &.selected {
+                                    background-color: #007bff;
+                                }
+                            }
+                            .colorSize {
+                                background-color: #e0e0e0; // Thay đổi màu nền khi hover
                             }
                         }
                     }

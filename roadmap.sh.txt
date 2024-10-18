@@ -9,6 +9,8 @@ Basic Authentication
 Token Authentication
 Cookie Based Auth
 
+ npm install --save @nestjs/websockets @nestjs/platform-socket.io socket.io
+
 Integration Testing
 Unit Testing
 Functional Testing

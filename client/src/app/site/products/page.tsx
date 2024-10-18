@@ -16,17 +16,17 @@ export default function ProductPage() {
     const [totalPages, setTotalPages] = useState(0);
     const [authData, setAuthData] = useState<any>(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const limit = 10;
 
     const [quickView, setQuickView] = useState<any | null>(null);
     const [overlayVisible, setOverlayVisible] = useState(false);
 
     const colors = ["Black", "White"];
     const [productData, setProductData] = useState({
-        color: []
+        color: [],
+        size: ""  // Thêm thuộc tính size
     });
 
-    const [quantity, setQuantity] = useState(1); 
+    const [quantity, setQuantity] = useState(1);
 
     useEffect(() => {
         fetchProducts(currentPage);
@@ -38,9 +38,7 @@ export default function ProductPage() {
                 const response = await axios.post(`${process.env.NEXT_PUBLIC_ORIGIN}/auth/decode`, {
                     accessToken,
                 });
-                console.log(response.data._id);
-                
-                const { password, ...userData } = response.data; 
+                const { password, ...userData } = response.data;
                 setAuthData(userData);
                 setIsAuthenticated(!!userData);
             } catch (error) {
@@ -49,20 +47,28 @@ export default function ProductPage() {
             }
         };
 
-        fetchData(); 
+        fetchData();
     }, [currentPage]);
 
-    const handleFavourite = () =>{
-        notifyToastSuccess(`Added to Favourite!`)
-    } 
+    const handleFavourite = () => {
+        notifyToastSuccess(`Added to Favourite!`);
+    };
+
     const handleColorChange = (color: string) => {
         setProductData((prev: any) => {
             const isSelected = prev.color.includes(color);
             return {
                 ...prev,
-                color: isSelected ? prev.color.filter((c: string) => c !== color) : [...prev.color, color]
+                color: [color],
             };
         });
+    };
+
+    const handleSizeChange = (size: string) => {
+        setProductData((prev: any) => ({
+            ...prev,
+            size: prev.size === size ? "" : size,  // Chọn hoặc bỏ chọn size
+        }));
     };
 
     const handleQuickView = (id: string) => {
@@ -70,37 +76,44 @@ export default function ProductPage() {
         if (product) {
             setQuickView(product);
             setOverlayVisible(true);
-            setQuantity(1); // Reset lại số lượng khi mở Quick View
+            setQuantity(1);
         }
     };
 
-    const handleAddCart = async (userId: string, productId: string, quantity: number) => {
+    const handleAddCart = async (userId: string, productId: string, color: string[], size: string, quantity: number) => {
         if (!userId) {
             notifyToastError('Please login to add products to the cart.');
             return;
         }
     
+        // Kiểm tra giá trị của color và size
+        console.log("Selected Color:", color);
+        console.log("Selected Size:", size);
+    
+        if (!size) {
+            notifyToastError('Please select a size.');
+            return;
+        }
+    
         try {
             const response = await axios.post(`${process.env.NEXT_PUBLIC_ORIGIN}/cart`, {
-                user_id: userId, // Ensure you are using the right keys
+                user_id: userId,
                 product_id: productId,
+                size: size, 
+                color: color,
                 quantity,
             });
-            console.log('User ID:', authData._id);
-            console.log('Product ID:', quickView._id);
-            console.log(response.data);
-            notifyToastSuccess(`Added successfully ${quickView.name}`)
+            notifyToastSuccess(`Added successfully ${quickView.name}`);
         } catch (error) {
             notifyToastError('Error adding product to the cart');
             console.error('Error adding to cart:', error);
         }
-    }
+    };
     
 
     const fetchProducts = async (page: number) => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_ORIGIN}/product/get-all`);
-            console.log(response.data.products)
             setProductInfo(response.data.products);
             setTotalPages(response.data.totalPages);
         } catch (error) {
@@ -114,15 +127,13 @@ export default function ProductPage() {
         product.category.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    // Hàm điều chỉnh số lượng
     const handleQuantityChange = (type: "increase" | "decrease") => {
         setQuantity(prev => {
             if (type === "increase") return prev + 1;
-            if (type === "decrease" && prev > 1) return prev - 1; // Giảm không cho xuống dưới 1
+            if (type === "decrease" && prev > 1) return prev - 1;
             return prev;
         });
     };
-
 
     return (
         <div className={styles.container}>
@@ -131,7 +142,7 @@ export default function ProductPage() {
                 {filteredProducts.map((product) => (
                     <div className={styles.product_container} key={product._id}>
                         <div className={styles.image}>
-                        <div className={styles.favourite} onClick={handleFavourite}>
+                            <div className={styles.favourite} onClick={handleFavourite}>
                                 <p><CiHeart className={styles.icon} /></p>
                             </div>
                             <img src={product.images[0]} alt={`${product.name}'s image`} />
@@ -153,60 +164,6 @@ export default function ProductPage() {
                     </div>
                 ))}
             </div>
-
-            {/* <div className={styles.product}>
-                {filteredProducts.map((product) => (
-                    <div className={styles.product_container} key={product._id}>
-                        <div className={styles.image}>
-                        <div className={styles.favourite} onClick={handleFavourite}>
-                                <p><CiHeart className={styles.icon} /></p>
-                            </div>
-                            <img src={product.images[0]} alt={`${product.name}'s image`} />
-                            <div className={styles.quick_view} onClick={() => handleQuickView(product._id)}>
-                                <p>Quick view</p>
-                            </div>
-                        </div>
-                        <div className={styles.product_info}>
-                            <div className={styles.category}>
-                                <p>{product.category}</p>
-                            </div>
-                            <div className={styles.name}>
-                                <p>{product.name}</p>
-                            </div>
-                            <div className={styles.price}>
-                                <p>{product.price}.00 $</p>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
-
-            <div className={styles.product}>
-                {filteredProducts.map((product) => (
-                    <div className={styles.product_container} key={product._id}>
-                        <div className={styles.image}>
-                        <div className={styles.favourite} onClick={handleFavourite}>
-                                <p><CiHeart className={styles.icon} /></p>
-                            </div>
-                            <img src={product.images[0]} alt={`${product.name}'s image`} />
-                            <div className={styles.quick_view} onClick={() => handleQuickView(product._id)}>
-                                <p>Quick view</p>
-                            </div>
-                        </div>
-                        <div className={styles.product_info}>
-                            <div className={styles.category}>
-                                <p>{product.category}</p>
-                            </div>
-                            <div className={styles.name}>
-                                <p>{product.name}</p>
-                            </div>
-                            <div className={styles.price}>
-                                <p>{product.price}.00 $</p>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div> */}
 
             {overlayVisible && quickView && (
                 <div className={styles.overlay}>
@@ -225,13 +182,13 @@ export default function ProductPage() {
                                                 onClick={() => setCurrentImageIndex((prev) => (prev > 0 ? prev - 1 : quickView.images.length - 1))}
                                                 className={styles.arrowButton}
                                             >
-                                                &lt; {/* Mũi tên trái */}
+                                                &lt;
                                             </button>
                                             <button
                                                 onClick={() => setCurrentImageIndex((prev) => (prev < quickView.images.length - 1 ? prev + 1 : 0))}
                                                 className={styles.arrowButton}
                                             >
-                                                &gt; {/* Mũi tên phải */}
+                                                &gt;
                                             </button>
                                         </div>
                                     </div>
@@ -248,7 +205,7 @@ export default function ProductPage() {
                                     <p>{quickView.category}</p>
                                 </div>
                                 <div className={styles.product_price}>
-                                    <p>${quickView.price}.00 </p>
+                                    <p>${quickView.price}.00</p>
                                 </div>
                                 <div className={styles.product_description}>
                                     <p>{quickView.description}</p>
@@ -264,12 +221,17 @@ export default function ProductPage() {
                                         </div>
                                     ))}
                                 </div>
+
                                 <div className={styles.product_size}>
                                     <p>Sizes:</p>
                                     {quickView.size && quickView.size.length > 0 ? (
                                         <div className={styles.sizeOptions}>
                                             {quickView.size.map((size: string, index: Key) => (
-                                                <span key={index} className={styles.sizeOption}>
+                                                <span
+                                                    key={index}
+                                                    className={`${styles.sizeOption} ${productData.size === size ? styles.selected : ''}`}
+                                                    onClick={() => handleSizeChange(size)} // Gọi hàm chọn size
+                                                >
                                                     {size}
                                                 </span>
                                             ))}
@@ -279,7 +241,6 @@ export default function ProductPage() {
                                     )}
                                 </div>
 
-                                {/* Thêm phần điều chỉnh số lượng */}
                                 <div className={styles.quantityControl}>
                                     <button onClick={() => handleQuantityChange("decrease")}>-</button>
                                     <p>{quantity}</p>
@@ -287,7 +248,11 @@ export default function ProductPage() {
                                 </div>
 
                                 <div className={styles.addCart}>
-                                    <button onClick={() => handleAddCart(authData._id, quickView._id, quantity)}>Add to cart</button>
+                                    <div className={styles.addCart}>
+                                        <button onClick={() => handleAddCart(`${authData._id}`, quickView._id, productData.color, productData.size, quantity)}>
+                                            Add to Cart
+                                        </button>
+                                    </div>
                                 </div>
                                 <button onClick={() => setOverlayVisible(false)}>Close</button>
                             </div>

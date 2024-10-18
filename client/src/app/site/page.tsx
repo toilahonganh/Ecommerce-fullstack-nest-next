@@ -3,6 +3,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import Banner from '../components/dashboard/Banner';
+import BannerImage from "../assets/image/banner1.png";
 
 export default function Page() {
     const [userInfo, setUserInfor] = useState<string[]>([]);
@@ -40,7 +41,7 @@ export default function Page() {
 
     return (
         <>
-            <Banner images={images} title="" />
+            <Banner images= {BannerImage} title="" />
 
             {/* {isAuthenticated ? (
                 <div>

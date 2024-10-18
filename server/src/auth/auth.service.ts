@@ -156,7 +156,7 @@ export class AuthService {
         const payload = await this.decode(accessToken);
         const userId = payload.id;
     
-        const user = await this.authModel.findById(userId).lean(); 
+        const user = await this.authModel.findById(userId).select('-password -email -phone_number -address').lean(); 
         if (!user) {
             throw new UnauthorizedException('User not found');
         }

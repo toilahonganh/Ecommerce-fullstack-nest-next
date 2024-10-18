@@ -2,20 +2,22 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from 'react';
+import { useRouter } from "next/navigation";
 import Cookies from 'js-cookie';
 import styles from './Header.module.scss';
 
 
 // react-icons
-import { IoIosMenu } from "react-icons/io";
-import { SiPhpmyadmin } from "react-icons/si";
+import { RiLogoutBoxRLine } from "react-icons/ri";
 import axios from "axios";
+import { notifyToastSuccess } from "@/app/utils/NotifyToast";
 
 
 export default function Header() {
     const pathname = usePathname();
     const [authData, setAuthData] = useState<any>(null); // Thay đổi kiểu thành 'any' hoặc định nghĩa kiểu phù hợp
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
         const accessToken = Cookies.get('accessToken');
@@ -38,6 +40,15 @@ export default function Header() {
 
         fetchData(); 
     }, []);
+    const handleLogout = async () => {
+        const allCookies = Cookies.get();
+
+        for (const cookie in allCookies) {
+            Cookies.remove(cookie);
+        }
+        notifyToastSuccess(`Loged out successfully!`);
+        router.push('/auth/login');
+    }
 
     const avatar = authData?.avatar; 
 
@@ -46,8 +57,7 @@ export default function Header() {
             {/* navbar_links */}
             <nav className={styles.navbar_links}>
                 <Link href="/dashboard" className={styles.logo}>
-                    <SiPhpmyadmin />
-                    {/* <h1 className={styles.title}>#admin</h1> */}
+                    <img src="https://d-themes.com/wordpress/riode/elements/wp-content/uploads/sites/3/2020/09/logo.png" alt="logo" />
                 </Link>
                 <nav>
                     <ul className={styles.navList}>
@@ -64,16 +74,13 @@ export default function Header() {
             {/* navbar_headerButtons */}
             <nav className={styles.navbar_headerButtons}>
                 <nav className={styles.navbar_search}>
-                    <button type="button">
-                        Search
-                        <kbd className={styles.navbar_kdb}>CtrlK</kbd>
-                    </button>
+
                 </nav>
                 <nav className={styles.navbar_profile}>
                         <img src={avatar} alt="Avatar" className={styles.avatar} />
                 </nav>
-                <nav className={styles.navbar_menu}>
-                    <IoIosMenu />
+                <nav className={styles.navbar_menu} onClick={handleLogout}>
+                    <RiLogoutBoxRLine />
                 </nav>
             </nav>
         </header>

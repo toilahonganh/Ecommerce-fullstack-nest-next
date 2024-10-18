@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { ProductModule } from './product/product.module';
+import {ChatGateway} from './socketio/chat.gateway';
 import { UiModule } from './ui/ui.module';
 import { CartModule } from './cart/cart.module';
 
@@ -18,5 +19,6 @@ import { CartModule } from './cart/cart.module';
     UiModule,
     CartModule,
   ],
+  // providers: [ChatGateway]
 })
 export class AppModule {}

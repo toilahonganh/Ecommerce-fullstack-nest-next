@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import styles from "./ShoppingCart.module.scss";
 import axios from "axios";
 import Cookies from 'js-cookie';
-import { ToastContainer } from "react-toastify";
+import { toast } from 'react-toastify';
+import { CiTrash } from "react-icons/ci";
+import { RiCloseLargeFill } from "react-icons/ri";
 
 export default function ShoppingCart({ isOpen, toggleCart }: { isOpen: boolean, toggleCart: () => void }) {
     const [cartInfo, setCartInfo] = useState<any[]>([]);
@@ -31,11 +33,14 @@ export default function ShoppingCart({ isOpen, toggleCart }: { isOpen: boolean, 
         return cartInfo.reduce((acc, item) => acc + item.product_id.price * item.quantity, 0);
     };
 
+
     return (
         <div className={`${styles.container} ${isOpen ? styles.open : ''}`}>
             <div className={styles.cartHeader}>
                 <h5>Shopping Cart</h5>
-                <button onClick={toggleCart} className={styles.closeBtn}>X</button>
+                <button onClick={toggleCart} className={styles.closeBtn}> 
+                    <RiCloseLargeFill />
+                </button>
             </div>
             <div className={styles.cartItems}>
                 {cartInfo.length > 0 ? (
@@ -44,9 +49,10 @@ export default function ShoppingCart({ isOpen, toggleCart }: { isOpen: boolean, 
                             <div className={styles.productInfo}>
                                 <img src={item.product_id.images[0] || "/default-product.jpg"} alt={item.product_id.name} />
                                 <h5>{item.product_id.name}</h5>
-                                <div className={styles.price_quantity}>
-                                    {item.quantity}
-                                    ${item.product_id.price}
+                                <p>${item.product_id.price}</p>
+                            <div className={styles.price_quantity}>
+                                    <p>x{item.quantity}</p>
+                                    <CiTrash className={styles.btn_delete} />
                                 </div>
                             </div>
                         </div>

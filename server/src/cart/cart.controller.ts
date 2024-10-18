@@ -20,4 +20,9 @@ export class CartController {
     ): Promise<Cart[]> {
         return this.cartService.getCartItems(userId);
     }
+
+        @Get('get-all-carts')
+        async getAllCarts(): Promise<Cart[]> {
+            return await this.cartService.getAllCarts();
+        }
 }

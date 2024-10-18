@@ -13,12 +13,14 @@ import { GiShoppingCart } from "react-icons/gi";
 import { IoMdHeartEmpty } from "react-icons/io";
 import axios from "axios";
 import { notifyToastError, notifyToastSuccess } from "@/app/utils/NotifyToast";
+import {useRouter} from "next/navigation";
 
 // Define the structure of the decoded JWT token
 interface DecodedToken extends JwtPayload {
     userId: string;
     email: string;
     avatar?: string; // Optional avatar property
+    name?: string
 }
 
 // Define the structure of a product
@@ -39,7 +41,7 @@ export default function Header() {
     const [quantity, setQuantity] = useState(1); // Quantity state
 
     const pathname = usePathname(); // Get the current path name
-
+    const router = useRouter();
     // Fetch authentication data from cookies on component mount
     useEffect(() => {
         const accessToken = Cookies.get('accessToken'); // Get the access token from cookies
@@ -89,7 +91,7 @@ export default function Header() {
 
         try {
             const response = await axios.post(`${process.env.NEXT_PUBLIC_ORIGIN}/cart`, {
-                user_id: userId, 
+                user_id: userId,
                 product_id: productId,
                 quantity, // Include quantity in the request
             });
@@ -101,16 +103,13 @@ export default function Header() {
     }
     // Handle logout
     const handleLogout = async () => {
-        try {
-            Cookies.remove('accessToken'); 
-            Cookies.remove('rereshToken'); 
-            setAuthData(null);
-            setIsAuthenticated(false); 
-            notifyToastSuccess('You have logged out successfully.');
-        } catch (error) {
-            notifyToastError('Error logging out'); 
-            console.error('Error during logout:', error);
+        const allCookies = Cookies.get();
+        
+        for (const cookieName in allCookies) {
+            Cookies.remove(cookieName);
         }
+        notifyToastSuccess(`Logout successfully!`);
+        router.push('/auth/login')
     };
 
     // Toggle cart visibility
@@ -118,13 +117,15 @@ export default function Header() {
         setIsCartOpen(prev => !prev); // Switch cart open/close state
     };
 
+    const avatar = authData?.avatar;
+    const name = authData?.name;
     return (
         <header className={styles.header}>
             <nav className={styles.nav_logo}></nav>
             <div className={styles.sticky}>
                 <div className={styles.auth}>
-                   {/* <span> Welcome {authData.name} to Riode store | </span> */}
-                   <span onClick={handleLogout}>Logout</span>
+                    {/* <span> Welcome {authData.name} to Riode store | </span> */}
+                    <span onClick={handleLogout}>Logout</span>
                 </div>
             </div>
 
@@ -134,10 +135,10 @@ export default function Header() {
                 </div>
                 <div className={styles.search_container}>
                     <div className={styles.search}>
-                        <input 
-                            type="text" 
-                            placeholder="Search..." 
-                            value={searchQuery} 
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            value={searchQuery}
                             onChange={handleSearchChange} // Call handleSearchChange on input change
                         />
                         <CiSearch className={styles.icon} />
@@ -154,9 +155,9 @@ export default function Header() {
                                             <div className={styles.info}>
                                                 <p>{product.name}</p>
                                                 <span>${product.price}.00</span>
-                                            </div> 
-                                            <div className={styles.action}> 
-                                                <button 
+                                            </div>
+                                            <div className={styles.action}>
+                                                <button
                                                     className={styles.add_cart}
                                                     onClick={() => handleAddCart(authData?._id, product._id)} // Call handleAddCart on button click
                                                 >
@@ -186,6 +187,10 @@ export default function Header() {
                     <div className={styles.title}>
                         <p>Shopping cart</p>
                     </div>
+                    <nav className={styles.navbar_profile}>
+                        <img src={avatar} alt="Avatar" className={styles.avatar} />
+                        <span>{name}</span>
+                    </nav>
                 </div>
             </div>
             <nav className={styles.navbar_links}>
@@ -209,11 +214,6 @@ export default function Header() {
                         <li>
                             <Link href="/site/" className={pathname === '/site/restaurants' ? styles.active : ''}>
                                 Pages
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="/site" className={pathname === '/site/blogs' ? styles.active : ''}>
-                                Elements
                             </Link>
                         </li>
                         <li>

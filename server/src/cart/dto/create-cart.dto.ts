@@ -9,6 +9,13 @@ export class CreateCartDto extends Document{
     @IsNotEmpty()
     @IsMongoId()
     product_id: string;
+    
+    @IsNotEmpty()
+    size: string;
+
+    @IsNotEmpty()
+    color: string[];
+
 
     @IsNotEmpty()
     @IsNumber()

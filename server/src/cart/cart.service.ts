@@ -9,11 +9,13 @@ export class CartService {
     constructor(@InjectModel(Cart.name) private cartModel: Model<Cart>) {}
 
     async createCart(createCartDto: CreateCartDto) {
-        const { user_id, product_id, quantity } = createCartDto;
+        const { user_id, product_id, size, color, quantity } = createCartDto;
 
         const cartItem = new this.cartModel({
             user_id,
             product_id,
+            size, 
+            color,
             quantity,
         });
 
@@ -25,5 +27,9 @@ export class CartService {
             .find({ user_id: userId })
             .populate('product_id')
             .exec();
+    }
+
+    async getAllCarts(): Promise<Cart[]> {
+        return this.cartModel.find().lean();
     }
 }

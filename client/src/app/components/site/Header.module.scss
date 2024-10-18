@@ -31,7 +31,9 @@ $border-color: #2277cc;
             font-size: 13px;
         }
 
+
         .auth {
+            display: flex;
             align-items: center;
 
             .icon {
@@ -53,9 +55,9 @@ $border-color: #2277cc;
     .actions {
         margin: 0px 10%;
         display: flex;
-        justify-content: space-between;
 
         .logo {
+            flex: 1;
             img {
                 width: 150px;
                 height: 44px;
@@ -63,6 +65,7 @@ $border-color: #2277cc;
         }
 
         .search_container {
+            flex: 1;
             width: 500px;
 
             .search {
@@ -95,8 +98,11 @@ $border-color: #2277cc;
             .searchDiv {
                 display: none;
                 position: absolute;
-                width: 500px;
+                width: 400px;
                 height: 500px;
+                overflow-y: auto;
+                scrollbar-width: none; 
+                -ms-overflow-style: none;
                 background-color: #ffffff;
                 border: 1px solid rgba(0, 0, 0, 0.1);
                 z-index: 1001;
@@ -167,9 +173,10 @@ $border-color: #2277cc;
         }
 
         .contact {
+            flex: 1;
             display: flex;
+            justify-content: center;
             align-items: center;
-            justify-content: space-between;
 
             .favorite {
                 .icon {
@@ -187,12 +194,25 @@ $border-color: #2277cc;
                     font-size: 30px;
                 }
             }
+            .navbar_profile {
+                display: flex;
+                align-items: center;
+                font-size: 12px;
+                span {
+                    margin-left: 10px;
+                }
+                .avatar {
+                    width: 38px;
+                    height: 38px;
+                    border-radius: 38px;
+                }
+            }
         }
     }
 
     .navbar_links {
         flex: 1;
-        margin: 0px 25%;
+        margin: 0px 30%;
         margin-top: 25px;
 
         .navList {

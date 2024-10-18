@@ -9,8 +9,15 @@ export class Cart extends Document {
     @Prop({ type: Types.ObjectId, required: true, ref: 'Product' }) 
     product_id: Types.ObjectId;
 
+    @Prop({ required: true})
+    size: string;
+
+    @Prop({ required: true})
+    color: string[];
+
     @Prop({ required: true, default: 1 })
     quantity: number;
+
 }
 
 export const CartSchema = SchemaFactory.createForClass(Cart);

@@ -68,16 +68,21 @@ export class ProductService {
   }
 
   async findAllBySearch(searchParam: string): Promise<Product[]> {
+    if (!searchParam || searchParam.trim() === '') {
+      return []; // Trả về mảng rỗng nếu không có từ khóa tìm kiếm
+    }
+  
     const response = await this.productModel.find({
       $or: [
         { name: { $regex: searchParam, $options: 'i' } },
         { category: { $regex: searchParam, $options: 'i' } }
       ]
     })
-    .limit(3)
+    .limit(10)
     .lean();
-
+  
     return response;
   }
+  
 }
 

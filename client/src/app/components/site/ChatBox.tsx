@@ -2,10 +2,10 @@
 import { useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { FiSend } from "react-icons/fi";
-import { MdKeyboardArrowUp } from "react-icons/md";
+import { IoIosSend } from "react-icons/io";
 import { IoChatbubbleOutline } from "react-icons/io5";
 import styles from "./ChatBox.module.scss";
+import { notifyToastSuccess } from "@/app/utils/NotifyToast";
 
 
 interface ChatForm {
@@ -13,12 +13,9 @@ interface ChatForm {
 }
 
 export default function ChatBox() {
-    const notify = (message: string) => {
-        toast(`${message}`);
-    };
-
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [message, setMessage] = useState<string>(""); // Trạng thái để lưu trữ tin nhắn
+    const [message, setMessage] = useState<string>("");
+
 
     const clickChatBox = async () => {
         console.log("On click");
@@ -27,8 +24,15 @@ export default function ChatBox() {
 
     const handleSendMessage = () => {
         if (message.trim() === "") return; // Không gửi tin nhắn rỗng
-        notify(message); // Hiển thị thông báo với tin nhắn
+        notifyToastSuccess(message); // Hiển thị thông báo với tin nhắn
         setMessage(""); // Xóa ô nhập sau khi gửi tin nhắn
+    };
+
+    // Hàm kiểm tra phím nhấn
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            handleSendMessage();
+        }
     };
 
     return (
@@ -41,12 +45,9 @@ export default function ChatBox() {
                 <div className={styles.chatbox_content}>
                     <div className={styles.dialog_message}>
                         <div className={styles.avatar}>
-                            <img src="https://res.cloudinary.com/dykq6w3m5/image/upload/v1728231738/qkwinfzdyi2x5bqnygtp.jpg" />
-                            <span>Đinh Hồng Anh</span>
-                            {/* Bạn có thể thêm các tin nhắn đã gửi ở đây */}
+                            <img src="https://d-themes.com/wordpress/riode/elements/wp-content/uploads/sites/3/2020/09/logo.png" />
                         </div>
                         <div className={styles.maintain_chat}>
-                            {/* Bạn có thể thêm các tin nhắn đã gửi ở đây */}
                         </div>
                         <div className={styles.input_message}>
                             <input
@@ -54,9 +55,10 @@ export default function ChatBox() {
                                 placeholder="Type message..."
                                 value={message} // Đặt giá trị cho ô nhập
                                 onChange={(e) => setMessage(e.target.value)} // Cập nhật trạng thái khi người dùng nhập
+                                onKeyDown={handleKeyDown} // Thêm sự kiện khi nhấn phím
                             />
                             <button onClick={handleSendMessage}>
-                                <FiSend />
+                                <IoIosSend className={styles.send_icon} />
                             </button>
                         </div>
                     </div>
