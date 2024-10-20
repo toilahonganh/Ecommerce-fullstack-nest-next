@@ -6,6 +6,8 @@ import { ProductModule } from './product/product.module';
 import {ChatGateway} from './socketio/chat.gateway';
 import { UiModule } from './ui/ui.module';
 import { CartModule } from './cart/cart.module';
+import { BannerModule } from './banner/banner.module';
+import { BlogModule } from './blog/blog.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { CartModule } from './cart/cart.module';
     ProductModule,
     UiModule,
     CartModule,
+    BannerModule,
+    BlogModule,
   ],
   // providers: [ChatGateway]
 })

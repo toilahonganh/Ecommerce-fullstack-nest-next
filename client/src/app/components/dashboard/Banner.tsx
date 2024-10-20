@@ -1,13 +1,9 @@
 // app/components/Banner.tsx
 'use client'
 import React, { useEffect, useState } from 'react';
+import {BannerProps} from "../../utils/interface.util";
 import styles from './Banner.module.scss';
 
-interface BannerProps {
-    images: string[]; 
-    title: string;
-    subtitle?: string; 
-}
 
 const Banner: React.FC<BannerProps> = ({ images, title, subtitle }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);

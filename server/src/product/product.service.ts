@@ -35,6 +35,11 @@ export class ProductService {
     };
   }
 
+  async findProductById(id: string): Promise<Product> {
+    const product = await this.productModel.findById(id);  
+    return product;
+  }
+  
   async findAll() {
     const products = await this.productModel.find().exec();
     const totalProducts = await this.productModel.countDocuments();

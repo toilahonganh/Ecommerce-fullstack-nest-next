@@ -3,52 +3,34 @@
     height: 350px;
     display: flex;
     background-color: #222222;
-
-    .left {
-        flex: 2;
-    }
-
-    .auth {
-        flex: 1;
+    
+    .footer_header {
         display: flex;
-        flex-direction: column;
+        color: #ffffff;
+        margin: 50px 10%;
 
-        .login {
-            width: 100%;
+        .subscribe {
             display: flex;
-            margin: 20px;
-
-            form {
-                display: flex;
-                justify-content: space-between;
-                .navbar_profile {
-                    width: 80px;
-                    img {
-                        border-radius: 25px;
-                    }
-                }
-                .input {
-                    width: 100%;
-                    font-size: 14px;
-                    padding: 0px 100px 0px 20px;
+            .input {
+                height: 40px;
+                padding:10px 160px 10px 20px;
+                background-color: #2c2c2c;
+                input {
                     color: #ffffff;
-                    outline: none;
                     border: none;
-                    background-color: #363636;
+                    outline: none;
+                    background-color: #2c2c2c;
 
-                    &:placeholder-shown {
-                        font-size: 14px;
-                    }
-                }
-
-                .btn_send {
-                    padding: 15px;
-                    font-size: 12px;
-                    text-transform: uppercase;
-                    color: #ffffff;
-                    background-color: #991116;
                 }
             }
+            .btn {
+                height: 40px;
+                align-items: center;
+                background-color: #2266cc;
+            }
+
         }
+        
     }
+
 }

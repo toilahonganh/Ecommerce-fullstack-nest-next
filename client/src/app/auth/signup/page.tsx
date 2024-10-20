@@ -6,7 +6,7 @@ import {notifyToastSuccess, notifyToastError} from '../../utils/NotifyToast';
 import 'react-toastify/dist/ReactToastify.css';
 import { MdOutlineEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
-import {SignupInterface} from "../interface";
+import {SignupInterface} from "../../utils/interface.util";
 import { useRouter } from 'next/navigation'; 
 import styles from "./Signup.module.scss";
 

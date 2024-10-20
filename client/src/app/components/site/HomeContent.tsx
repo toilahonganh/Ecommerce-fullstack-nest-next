@@ -8,7 +8,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
 
 import Card from '../../components/site/Card';
-import Heading from "../../components/site/Heading";
 import ChatBox from './ChatBox';
 import BackToTop from './BackToTop';
 import styles from "./HomeContent.module.scss";

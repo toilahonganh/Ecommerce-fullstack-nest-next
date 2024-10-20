@@ -1,0 +1,229 @@
+.blogContainer {
+    padding: 0;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 14px;
+
+    &:focus {
+        border-color: #007BFF; /* Highlight border on focus */
+        outline: none; /* Remove default outline */
+    }
+}
+
+.blogTable {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+
+    th, td {
+        padding: 20px 20px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        vertical-align: middle; /* Center content vertically */
+    }
+
+    th {
+        background-color: #f7f7f7;
+        font-weight: 600;
+        color: #333;
+        font-size: 13px;
+    }
+
+    tbody tr {
+        &:hover {
+            background-color: #f1f1f1;
+        }
+    }
+
+    td {
+        font-size: 14px;
+        color: #555;
+        word-break: break-word; /* Break long words in cells */
+    }
+
+    img {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+.image {
+    display: block;
+    margin: 0 auto;
+}
+
+.editButton, .deleteButton {
+    width: 40px;
+    height: 30px;
+    margin-bottom: 10px;
+    margin-right: 5px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.editButton {
+    background-color: #007BFF;
+    color: white;
+
+    &:hover {
+        background-color: #0056b3;
+    }
+}
+
+.deleteButton {
+    background-color: #d32f2f;
+    color: white;
+
+    &:hover {
+        background-color: #ef3b4f;
+    }
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* Make sure the overlay is above other elements */
+
+    &Content {
+        background-color: #fff;
+        padding: 20px 30px; /* Adjusted padding */
+        border-radius: 8px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        width: 800px; 
+        max-width: 90%;
+        max-height: 80%; /* Giới hạn chiều cao tối đa */
+        overflow-y: auto; /* Cho phép cuộn theo chiều dọc */
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 16px;
+            text-transform: uppercase;
+            color: #333;
+        }
+
+        div {
+            margin-bottom: 15px;
+
+            label {
+                display: block;
+                margin-bottom: 5px;
+                color: #555;
+                font-size: 13px;
+            }
+
+            input {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 13px;
+                color: #333;
+
+                &:focus {
+                    border-color: #7CFC00; /* Highlight border on focus */
+                    outline: none; /* Remove default outline */
+                }
+            }
+        }
+
+        button {
+            padding: 10px 15px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+
+            &:first-of-type {
+                background-color: #007BFF; /* Save button */
+                color: white;
+
+                &:hover {
+                    background-color: #0056b3;
+                }
+            }
+            &:last-of-type {
+                background-color: #f44336; /* Cancel button */
+                color: white;
+
+                &:hover {
+                    background-color: #d32f2f;
+                }
+            }
+        }
+    }
+
+    .imageGallery {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    .imageContainer {
+        position: relative;
+        margin: 10px;
+    }
+    
+    .image {
+        width: 100px; /* Thay đổi kích thước ảnh theo yêu cầu */
+        height: 100px;
+        // object-fit: cover;
+    }
+    
+    .deleteImageButton {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: red;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+
+    button {
+        padding: 5px 10px;
+        margin: 0 5px;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        
+        &:disabled {
+            background-color: #d6d6d6;
+            cursor: not-allowed;
+        }
+    }
+
+    span {
+        margin: 0 10px;
+    }
+}

@@ -211,6 +211,11 @@
                         font-size: 32px; // Tăng kích thước chữ
                         font-weight: 700; // Tăng độ đậm
                         margin-bottom: 10px;
+                        display: flex;
+                        .btn_close {
+                            font-size: 20px;
+                            margin-left: auto;
+                        }
                     }
 
                     .product_category {
@@ -233,25 +238,28 @@
                         margin-bottom: 20px;
                     }
 
-                    .colorOptions {
+                    .colorOptions { 
                         display: flex;
-                        margin-bottom: 20px;
-
+                        align-items: center;
+                        margin: 20px 0px;
                         .colorOption {
-                            border: 1px solid rgba(0, 0, 0, 0.2);
-                            display: flex;
-                            width: 36px; // Tăng kích thước nút màu
-                            height: 36px;
-                            border-radius: 50%;
-                            // border: 2px solid transparent;
+                            width: 30px; /* Thay đổi kích thước theo nhu cầu */
+                            height: 30px; /* Thay đổi kích thước theo nhu cầu */
+                            // border-radius: 50%; /* Để tạo hình tròn cho màu sắc */
+                            margin: 5px;
                             cursor: pointer;
-                            position: relative;
-                            transition: border-color 0.3s;
-                            margin-right: 10px; // Tăng khoảng cách giữa các nút màu
-
+                            border: 1px solid rgba(0, 0, 0, 0.2); /* Mặc định không có viền */
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            
                             &.selected {
-                                border-color: #1E90FF;
+                                border: 2px solid #000; /* Viền đen khi được chọn */
                             }
+                        }
+                        .colorLabel {
+                            text-transform: uppercase;
+                            font-size: 12px; /* Kích thước chữ */
                         }
                     }
 

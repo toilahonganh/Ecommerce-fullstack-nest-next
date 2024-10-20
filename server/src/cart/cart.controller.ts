@@ -5,7 +5,7 @@ import { CreateCartDto } from './dto/create-cart.dto'; //  DTO
 
 @Controller('cart')
 export class CartController {
-    constructor(private cartService: CartService) {}
+    constructor(private cartService: CartService) { }
 
     @Post()
     async createCart(
@@ -14,15 +14,15 @@ export class CartController {
         return this.cartService.createCart(createCartDto);
     }
 
-    @Get(':userId') 
+    @Get(':userId')
     async getCart(
         @Param('userId') userId: string // Lấy userId từ URL
     ): Promise<Cart[]> {
         return this.cartService.getCartItems(userId);
     }
 
-        @Get('get-all-carts')
-        async getAllCarts(): Promise<Cart[]> {
-            return await this.cartService.getAllCarts();
-        }
+    @Get('get-all-carts')
+    async getAllCarts(): Promise<Cart[]> {
+        return await this.cartService.getAllCarts();
+    }
 }

@@ -4,7 +4,7 @@ import axios from "axios";
 import { useState } from "react";
 import { ToastContainer } from 'react-toastify';
 import { notifyToastSuccess, notifyToastError } from "../../utils/NotifyToast";
-import { LoginInterface } from "../interface";
+import { LoginInterface } from "../../utils/interface.util";
 import { MdOutlineEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import Cookies from 'js-cookie';

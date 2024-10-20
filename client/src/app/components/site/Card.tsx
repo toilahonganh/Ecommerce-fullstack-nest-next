@@ -1,11 +1,7 @@
-'use client'; // Đảm bảo Card cũng là Client Component
+'use client'; 
+import {CardProps} from "../../utils/interface.util";
 import styles from "./Card.module.scss";
 
-interface CardProps {
-    images: string[];
-    name: string; 
-    price: number; 
-}
 
 export default function Card({
     images, 

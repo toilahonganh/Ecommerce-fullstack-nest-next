@@ -2,11 +2,15 @@
 
 import { Key, useEffect, useState } from "react";
 import axios from "axios";
+import Banner from "../../components/site/Banner";
 import Cookies from 'js-cookie';
 import { ToastContainer } from "react-toastify";
 import { notifyToastError, notifyToastSuccess } from "@/app/utils/NotifyToast";
 import { CiHeart } from "react-icons/ci";
+import { RiCloseLargeFill } from "react-icons/ri";
 import styles from "./Products.module.scss";
+import Link from "next/link";
+
 
 export default function ProductPage() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -15,12 +19,12 @@ export default function ProductPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [authData, setAuthData] = useState<any>(null);
+    const [cartItems, setCartItems] = useState<any[]>([]);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const [quickView, setQuickView] = useState<any | null>(null);
     const [overlayVisible, setOverlayVisible] = useState(false);
 
-    const colors = ["Black", "White"];
     const [productData, setProductData] = useState({
         color: [],
         size: ""  // Thêm thuộc tính size
@@ -59,7 +63,7 @@ export default function ProductPage() {
             const isSelected = prev.color.includes(color);
             return {
                 ...prev,
-                color: [color],
+                color: [color], // Cập nhật màu được chọn
             };
         });
     };
@@ -74,6 +78,7 @@ export default function ProductPage() {
     const handleQuickView = (id: string) => {
         const product = productInfo.find(p => p._id === id);
         if (product) {
+            console.log(product.color)
             setQuickView(product);
             setOverlayVisible(true);
             setQuantity(1);
@@ -85,31 +90,42 @@ export default function ProductPage() {
             notifyToastError('Please login to add products to the cart.');
             return;
         }
-    
+
         // Kiểm tra giá trị của color và size
         console.log("Selected Color:", color);
         console.log("Selected Size:", size);
-    
+
         if (!size) {
             notifyToastError('Please select a size.');
             return;
         }
-    
+
         try {
             const response = await axios.post(`${process.env.NEXT_PUBLIC_ORIGIN}/cart`, {
                 user_id: userId,
                 product_id: productId,
-                size: size, 
+                size: size,
                 color: color,
                 quantity,
             });
+
+            setCartItems((prevItems) => [
+                ...prevItems,
+                {
+                    productId,
+                    size,
+                    color,
+                    quantity,
+                    productDetails: quickView  // Thêm chi tiết sản phẩm vào giỏ hàng
+                }
+            ]);
             notifyToastSuccess(`Added successfully ${quickView.name}`);
         } catch (error) {
             notifyToastError('Error adding product to the cart');
             console.error('Error adding to cart:', error);
         }
     };
-    
+
 
     const fetchProducts = async (page: number) => {
         try {
@@ -137,30 +153,34 @@ export default function ProductPage() {
 
     return (
         <div className={styles.container}>
+            <Banner title="RIODE PRODUCTS" subtitle="/ Riode products" images={""} />
+
             <ToastContainer />
             <div className={styles.product}>
                 {filteredProducts.map((product) => (
                     <div className={styles.product_container} key={product._id}>
-                        <div className={styles.image}>
-                            <div className={styles.favourite} onClick={handleFavourite}>
-                                <p><CiHeart className={styles.icon} /></p>
+                            <div className={styles.image}>
+                                <div className={styles.favourite} onClick={handleFavourite}>
+                                    <p><CiHeart className={styles.icon} /></p>
+                                </div>
+                                <img src={product.images[0]} alt={`${product.name}'s image`} />
+                                <div className={styles.quick_view} onClick={() => handleQuickView(product._id)}>
+                                    <p>Quick view</p>
+                                </div>
                             </div>
-                            <img src={product.images[0]} alt={`${product.name}'s image`} />
-                            <div className={styles.quick_view} onClick={() => handleQuickView(product._id)}>
-                                <p>Quick view</p>
+                        <Link href={`/site/products/${product._id}`}>
+                            <div className={styles.product_info}>
+                                <div className={styles.category}>
+                                    <p>{product.category}</p>
+                                </div>
+                                <div className={styles.name}>
+                                    <p>{product.name}</p>
+                                </div>
+                                <div className={styles.price}>
+                                    <p>{product.price}.00 $</p>
+                                </div>
                             </div>
-                        </div>
-                        <div className={styles.product_info}>
-                            <div className={styles.category}>
-                                <p>{product.category}</p>
-                            </div>
-                            <div className={styles.name}>
-                                <p>{product.name}</p>
-                            </div>
-                            <div className={styles.price}>
-                                <p>{product.price}.00 $</p>
-                            </div>
-                        </div>
+                        </Link>
                     </div>
                 ))}
             </div>
@@ -177,6 +197,7 @@ export default function ProductPage() {
                                             alt={`Additional image ${currentImageIndex + 1}`}
                                             className={styles.additionalImage}
                                         />
+
                                         <div className={styles.arrows}>
                                             <button
                                                 onClick={() => setCurrentImageIndex((prev) => (prev > 0 ? prev - 1 : quickView.images.length - 1))}
@@ -200,6 +221,10 @@ export default function ProductPage() {
                             <div className={styles.product_details}>
                                 <div className={styles.product_name}>
                                     <p>{quickView.name}</p>
+                                    <RiCloseLargeFill
+                                        className={styles.btn_close}
+                                        onClick={() => setOverlayVisible(false)}
+                                    />
                                 </div>
                                 <div className={styles.product_category}>
                                     <p>{quickView.category}</p>
@@ -211,16 +236,22 @@ export default function ProductPage() {
                                     <p>{quickView.description}</p>
                                 </div>
                                 <div className={styles.colorOptions}>
-                                    {colors.map((color) => (
+                                    {quickView.color.map((color: string) => (
                                         <div
                                             key={color}
                                             className={`${styles.colorOption} ${productData.color.includes(color) ? styles.selected : ''}`}
                                             style={{ backgroundColor: color.toLowerCase() }}
-                                            onClick={() => handleColorChange(color)}
-                                        >
-                                        </div>
+                                            onClick={() => handleColorChange(color.toLowerCase())}
+                                        />
                                     ))}
+                                      {productData.color.length > 0 && (
+                                        <span className={styles.colorLabel}>
+                                            {productData.color[0] } {/* Hiển thị màu đầu tiên trong mảng màu đã chọn */}
+                                        </span>
+                                    )}
+                                    
                                 </div>
+                              
 
                                 <div className={styles.product_size}>
                                     <p>Sizes:</p>
@@ -254,7 +285,7 @@ export default function ProductPage() {
                                         </button>
                                     </div>
                                 </div>
-                                <button onClick={() => setOverlayVisible(false)}>Close</button>
+                                {/* <button onClick={() => setOverlayVisible(false)}>Close</button> */}
                             </div>
                         </div>
                     </div>

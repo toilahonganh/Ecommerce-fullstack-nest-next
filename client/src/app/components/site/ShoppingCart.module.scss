@@ -1,16 +1,16 @@
 .container {
     position: fixed;
     top: 0;
-    right: -550px;
-    width: 550px;
-    height: 100%;
+    right: -400px;
+    width: 400px;
+    height: 100vh;
     background-color: white;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
     // transform: translateY(-50%);
     overflow-y: auto;
     scrollbar-width: none; 
     -ms-overflow-style: none;
-    z-index: 1000;
+    z-index: 2002;
     transition: right 0.3s ease-in-out;
 
     .cartHeader {

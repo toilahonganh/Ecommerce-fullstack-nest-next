@@ -1,0 +1,163 @@
+.product_details {
+    margin: 10px 12%;
+    display: flex;
+    font-family: "geistSansFont", Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, arial;
+
+    .product_images {
+        flex: 1;
+        gap: 10px;
+        display: flex;
+        .product_images_row {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            img {
+                width: 110px;
+                height: 125px;
+            }
+        }
+        .product_images_thumbnail {
+            img {
+                width: 460px;
+                height: 520px;
+            }
+
+        }
+    }
+
+    .product_info {
+        flex: 1;
+        padding: 0px 20px;
+        .product_name {
+            text-transform: uppercase;
+            font-size: 26px;
+            font-weight: 700;
+        }
+        .product_category {
+            font-size: 12px;
+            color: rgba(0, 0, 0, 0.6);
+        }
+        .product_price {
+            font-size: 26px;
+            color: #d26e4b;
+            font-weight: 900;
+        }
+        .product_description {
+            font-size: 14px;
+            color: #666666;
+        }
+        .product_color { 
+            display: flex;
+            align-items: center;
+            margin: 20px 0px;
+            .colorOption {
+                width: 30px; /* Thay đổi kích thước theo nhu cầu */
+                height: 30px; /* Thay đổi kích thước theo nhu cầu */
+                // border-radius: 50%; /* Để tạo hình tròn cho màu sắc */
+                margin: 5px;
+                cursor: pointer;
+                border: 1px solid rgba(0, 0, 0, 0.2); /* Mặc định không có viền */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                
+                &.selected {
+                }
+            }
+            .colorLabel {
+                text-transform: uppercase;
+                font-size: 12px; /* Kích thước chữ */
+            }
+        }
+
+        .product_size {
+            p {
+                font-weight: 600;
+                margin-bottom: 5px;
+            }
+            &.selected {
+                // border-color: #1E90FF;
+            }
+
+            .sizeOptions {
+                display: flex;
+
+                .sizeOption {
+                    background-color: #f0f0f0;
+                    border-radius: 4px;
+                    padding: 5px 10px;
+                    margin-right: 10px;
+                    cursor: pointer;
+                    transition: background-color 0.3s;
+
+                    &:hover {
+                        background-color: #e0e0e0; // Thay đổi màu nền khi hover
+                    }
+                    &.selected {
+                        // background-color: #007bff;
+                    }
+                }
+                .colorSize {
+                    background-color: #e0e0e0; // Thay đổi màu nền khi hover
+                }
+            }
+        }
+
+        .quantityControl {
+            align-items: center;
+            display: flex;
+            margin: 20px 0;
+
+            button {
+                padding: 8px 12px;
+                border: none;
+                border-radius: 5px;
+                background-color: #007bff;
+                color: white;
+                cursor: pointer;
+                transition: background-color 0.3s, transform 0.3s;
+
+                &:hover {
+                    background-color: #0056b3;
+                    transform: scale(1.05); // Phóng to khi hover
+                }
+            }
+
+            p {
+                margin: 0 15px;
+                font-size: 18px;
+            }
+        }
+
+        .addCart {
+            display: flex;
+
+            button {
+                margin-top: 10px;
+                padding: 12px;
+                border: none;
+                border-radius: 5px;
+                background-color: #007bff;
+                color: white;
+                cursor: pointer;
+                transition: background-color 0.3s;
+
+                &:hover {
+                    background-color: #0056b3;
+                }
+            }
+        }
+
+        button {
+            background-color: transparent;
+            color: #888;
+            border: none;
+            margin-top: 10px;
+            cursor: pointer;
+
+            &:hover {
+                color: #555; // Đổi màu chữ khi hover
+            }
+        }
+    }
+}

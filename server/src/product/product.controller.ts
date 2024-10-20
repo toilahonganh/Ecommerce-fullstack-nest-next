@@ -15,12 +15,12 @@ export class ProductController {
   }
   @Get('get-all-products')
   async getAllProducts(
-    @Query('page') page: number = 1, 
+    @Query('page') page: number = 1,
     @Query('limit') limit: number = 5
   ) {
     try {
       const { products, totalProducts, totalPages, currentPage } = await this.productService.findAllProducts(page, limit);
-      
+
       return {
         products,
         totalProducts,
@@ -36,8 +36,8 @@ export class ProductController {
   async getAll(
   ) {
     try {
-      const { products, totalProducts} = await this.productService.findAll();
-      
+      const { products, totalProducts } = await this.productService.findAll();
+
       return {
         products,
         totalProducts,
@@ -49,7 +49,7 @@ export class ProductController {
 
   @Get('get-products-category')
   async getProductByCategory(
-    @Query('category') category: string  
+    @Query('category') category: string
   ) {
     try {
       const products = await this.productService.findProductByCategory(category);
@@ -59,19 +59,24 @@ export class ProductController {
     }
   }
   @Put('/:id')
-    async editUser(
-        @Param('id') id: string,
-        @Body() updateData: Partial<Product>
-    ): Promise<Product> {
-        return await this.productService.editProduct(id, updateData);
-    }
+  async editUser(
+    @Param('id') id: string,
+    @Body() updateData: Partial<Product>
+  ): Promise<Product> {
+    return await this.productService.editProduct(id, updateData);
+  }
 
-    @Delete('/:id')
-    async deleteProduct(
-        @Param('id') id: string,
-    ): Promise<Product> {
-        return await this.productService.deleteProduct(id);
-    }
+  @Delete('/:id')
+  async deleteProduct(
+    @Param('id') id: string,
+  ): Promise<Product> {
+    return await this.productService.deleteProduct(id);
+  }
+
+  @Get('/:id')
+  async searchProductById(@Param('id') id: string): Promise<Product> {
+    return this.productService.findProductById(id);
+  }
 
   @Get()
   async searchProducts(@Query('query') query: string): Promise<Product[]> {
@@ -88,5 +93,5 @@ export class ProductController {
       throw new HttpException('Error searching for products', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-    
+
 }

@@ -1,91 +1,76 @@
 "use client";
+import axios from "axios";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { JwtPayload } from "jwt-decode";
-import { usePathname } from "next/navigation";
 import Cookies from 'js-cookie';
 import ShoppingCart from "./page";
-import styles from './Header.module.scss';
+import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { notifyToastError, notifyToastSuccess } from "@/app/utils/NotifyToast";
+import { Product, DecodedToken } from "../../utils/interface.util";
+import HeaderScroll from '../../components/site/HeaderScroll';
 
-// Importing React icons for the header
 import { CiSearch } from "react-icons/ci";
 import { GiShoppingCart } from "react-icons/gi";
 import { IoMdHeartEmpty } from "react-icons/io";
-import axios from "axios";
-import { notifyToastError, notifyToastSuccess } from "@/app/utils/NotifyToast";
-import {useRouter} from "next/navigation";
+import { IoIosArrowDown } from "react-icons/io";
+import styles from './Header.module.scss';
 
-// Define the structure of the decoded JWT token
-interface DecodedToken extends JwtPayload {
-    userId: string;
-    email: string;
-    avatar?: string; // Optional avatar property
-    name?: string
-}
-
-// Define the structure of a product
-interface Product {
-    _id: string;
-    name: string;
-    price: number;
-    images: string[];
-}
 
 export default function Header() {
-    const [authData, setAuthData] = useState<DecodedToken | null>(null); // State for authentication data
-    const [isAuthenticated, setIsAuthenticated] = useState(false); // State for authentication status
-    const [isCartOpen, setIsCartOpen] = useState(false); // State to toggle cart visibility
-    const [searchQuery, setSearchQuery] = useState(''); // State for search query
-    const [isSearchVisible, setIsSearchVisible] = useState(false); // State to control search result visibility
-    const [searchResults, setSearchResults] = useState<Product[]>([]); // State for search results
-    const [quantity, setQuantity] = useState(1); // Quantity state
+    const [authData, setAuthData] = useState<DecodedToken | null>(null);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isCartOpen, setIsCartOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [isSearchVisible, setIsSearchVisible] = useState(false);
+    const [searchResults, setSearchResults] = useState<Product[]>([]);
+    const [quantity, setQuantity] = useState(1);
+    const [isVisible, setIsVisible] = useState(false);
 
-    const pathname = usePathname(); // Get the current path name
+    const pathname = usePathname();
     const router = useRouter();
-    // Fetch authentication data from cookies on component mount
+
     useEffect(() => {
-        const accessToken = Cookies.get('accessToken'); // Get the access token from cookies
+        const accessToken = Cookies.get('accessToken');
         const fetchData = async () => {
             try {
                 const response = await axios.post(`${process.env.NEXT_PUBLIC_ORIGIN}/auth/decode`, {
                     accessToken,
                 });
-                const { password, ...userData } = response.data; // Exclude password from user data
-                setAuthData(userData); // Set authentication data
-                setIsAuthenticated(!!userData); // Check if user data exists
+                const { password, ...userData } = response.data;
+                setAuthData(userData);
+                setIsAuthenticated(!!userData);
             } catch (error) {
-                console.error("Error decoding token:", error); // Log error
-                setIsAuthenticated(false); // Set authenticated state to false on error
+                console.error("Error decoding token:", error);
+                setIsAuthenticated(false);
             }
         };
-        fetchData(); // Call the fetch function
-    }, []); // Empty dependency array to run on mount only
+        fetchData();
+    }, []);
 
-    // Handle search input change
     const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const query = e.target.value; // Get the search query
-        setSearchQuery(query); // Update search query state
-        setIsSearchVisible(query.length > 0); // Show search results if there's input
+        const query = e.target.value;
+        setSearchQuery(query);
+        setIsSearchVisible(query.length > 0);
 
         if (query.trim() === '') {
-            setSearchResults([]); // Clear search results if input is empty
+            setSearchResults([]);
             return;
         }
 
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_ORIGIN}/product`, {
-                params: { query }, // Send query as a parameter
+                params: { query },
             });
-            setSearchResults(response.data); // Update search results
+            setSearchResults(response.data);
         } catch (error) {
-            console.error('Error fetching search results:', error); // Log error
+            console.error('Error fetching search results:', error);
         }
     };
 
-    // Handle adding a product to the cart
     const handleAddCart = async (userId: string, productId: string) => {
         if (!userId) {
-            notifyToastError('Please login to add products to the cart.'); // Notify if user is not logged in
+            notifyToastError('Please login to add products to the cart.');
             return;
         }
 
@@ -93,45 +78,61 @@ export default function Header() {
             const response = await axios.post(`${process.env.NEXT_PUBLIC_ORIGIN}/cart`, {
                 user_id: userId,
                 product_id: productId,
-                quantity, // Include quantity in the request
+                quantity,
             });
-            notifyToastSuccess(`Added ${searchResults.find(item => item._id === productId)?.name} to cart`); // Notify success
+            notifyToastSuccess(`Added ${searchResults.find(item => item._id === productId)?.name} to cart`);
         } catch (error) {
-            notifyToastError('Error adding product to the cart'); // Notify error
-            console.error('Error adding to cart:', error); // Log error
+            notifyToastError('Error adding product to the cart');
+            console.error('Error adding to cart:', error);
         }
     }
-    // Handle logout
+
     const handleLogout = async () => {
         const allCookies = Cookies.get();
-        
+
         for (const cookieName in allCookies) {
             Cookies.remove(cookieName);
         }
         notifyToastSuccess(`Logout successfully!`);
-        router.push('/auth/login')
+        router.push('/auth/login');
     };
 
-    // Toggle cart visibility
     const toggleCart = () => {
-        setIsCartOpen(prev => !prev); // Switch cart open/close state
+        setIsCartOpen(prev => !prev);
     };
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 100) {
+                setIsVisible(true);
+            } else {
+                setIsVisible(false);
+            }
+        }
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        }
+    }, []);
 
     const avatar = authData?.avatar;
     const name = authData?.name;
+
     return (
         <header className={styles.header}>
+            <HeaderScroll />
             <nav className={styles.nav_logo}></nav>
             <div className={styles.sticky}>
                 <div className={styles.auth}>
-                    {/* <span> Welcome {authData.name} to Riode store | </span> */}
                     <span onClick={handleLogout}>Logout</span>
                 </div>
             </div>
 
             <div className={styles.actions}>
                 <div className={styles.logo}>
-                    <img src="https://d-themes.com/wordpress/riode/elements/wp-content/uploads/sites/3/2020/09/logo.png" alt="logo" />
+                    <Link href="/site">
+                        <img src="https://d-themes.com/wordpress/riode/elements/wp-content/uploads/sites/3/2020/09/logo.png" alt="logo" />
+                    </Link>
                 </div>
                 <div className={styles.search_container}>
                     <div className={styles.search}>
@@ -139,7 +140,7 @@ export default function Header() {
                             type="text"
                             placeholder="Search..."
                             value={searchQuery}
-                            onChange={handleSearchChange} // Call handleSearchChange on input change
+                            onChange={handleSearchChange}
                         />
                         <CiSearch className={styles.icon} />
                     </div>
@@ -159,7 +160,7 @@ export default function Header() {
                                             <div className={styles.action}>
                                                 <button
                                                     className={styles.add_cart}
-                                                    onClick={() => handleAddCart(authData?._id, product._id)} // Call handleAddCart on button click
+                                                    onClick={() => handleAddCart(authData?._id, product._id)}
                                                 >
                                                     Add to cart
                                                 </button>
@@ -209,27 +210,56 @@ export default function Header() {
                         <li>
                             <Link href="/site/products" className={pathname === '/site/products' ? styles.active : ''}>
                                 Products
+                                <IoIosArrowDown className={styles.icon} />
+                                <div className={styles.product_dropdown}>
+                                    <ul className={styles.product_dropdown_actions}>
+                                        <li>
+                                            <Link href="">T-shirts</Link>
+                                        </li>
+                                        <li>
+                                            <Link href="">T-shirts</Link>
+                                        </li>
+                                        <li>
+                                            <Link href="">T-shirts</Link>
+                                        </li>
+                                    </ul>
+
+                                    <ul className={styles.product_dropdown_link}>
+                                        <li>
+                                            <Link href="">T-shirts</Link>
+                                        </li>
+                                        <li>
+                                            <Link href="">T-shirts</Link>
+                                        </li>
+                                        <li>
+                                            <Link href="">T-shirts</Link>
+                                        </li>
+
+                                    </ul>
+                                </div>
+
                             </Link>
                         </li>
                         <li>
                             <Link href="/site/" className={pathname === '/site/restaurants' ? styles.active : ''}>
                                 Pages
+                                <IoIosArrowDown className={styles.icon} />
                             </Link>
                         </li>
                         <li>
-                            <Link href="/site" className={pathname === '/site/blogs' ? styles.active : ''}>
-                                Features
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="/site" className={pathname === '/site/blogs' ? styles.active : ''}>
+                            <Link href="/site/blogs" className={pathname === '/site/blogs' ? styles.active : ''}>
                                 Blogs
+                                <IoIosArrowDown className={styles.icon} />
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/site/contact" className={pathname === '/site/contact' ? styles.active : ''}>
+                                About us
                             </Link>
                         </li>
                     </ul>
                 </nav>
             </nav>
-
             <ShoppingCart isOpen={isCartOpen} toggleCart={toggleCart} /> {/* Render ShoppingCart component */}
         </header>
     );

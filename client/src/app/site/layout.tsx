@@ -2,7 +2,6 @@
 import { usePathname } from "next/navigation";
 import Header from "../components/site/Header";
 import styles from './Layout.module.scss';
-import Banner from "../components/site/common/Banner";
 import Footer from "../components/site/Footer";
 import BackToTop from "../components/site/BackToTop";
 import ChatBox from "../components/site/ChatBox";
@@ -19,7 +18,6 @@ export default function Layout({
     return (
         <div>
             <Header />
-            {/* <Banner images={images} title="" /> */}
             <div className={styles.management_outlet}>
                 {children}
                 <BackToTop />

@@ -1,21 +1,19 @@
 "use client";
+import axios from "axios";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from 'react';
 import { useRouter } from "next/navigation";
 import Cookies from 'js-cookie';
-import styles from './Header.module.scss';
 
-
-// react-icons
 import { RiLogoutBoxRLine } from "react-icons/ri";
-import axios from "axios";
 import { notifyToastSuccess } from "@/app/utils/NotifyToast";
+import styles from './Header.module.scss';
 
 
 export default function Header() {
     const pathname = usePathname();
-    const [authData, setAuthData] = useState<any>(null); // Thay đổi kiểu thành 'any' hoặc định nghĩa kiểu phù hợp
+    const [authData, setAuthData] = useState<any>(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const router = useRouter();
 
@@ -64,7 +62,7 @@ export default function Header() {
                         <li><Link href="/dashboard" className={pathname === '/dashboard' ? styles.active : ''}>Dashboard</Link></li>
                         <li><Link href="/dashboard/products/manage-products" className={pathname === '/dashboard/products/manage-products' ? styles.active : ''}>Products</Link></li>
                         <li><Link href="/dashboard/users/manage-users" className={pathname === '/dashboard/users' ? styles.active : ''}>Users</Link></li>
-                        <li><Link href="/dashboard/management" className={pathname === '/dashboard/management' ? styles.active : ''}>Blogs</Link></li>
+                        <li><Link href="/dashboard/blogs/manage-blogs" className={pathname === '/dashboard/blogs/manage-blogs' ? styles.active : ''}>Blogs</Link></li>
                         <li><Link href="/dashboard/management" className={pathname === '/dashboard/management' ? styles.active : ''}>Carts</Link></li>
                         <li><Link href="/dashboard/UI" className={pathname === '/dashboard/UI' ? styles.active : ''}>UI</Link></li>
                     </ul>
@@ -74,7 +72,6 @@ export default function Header() {
             {/* navbar_headerButtons */}
             <nav className={styles.navbar_headerButtons}>
                 <nav className={styles.navbar_search}>
-
                 </nav>
                 <nav className={styles.navbar_profile}>
                         <img src={avatar} alt="Avatar" className={styles.avatar} />

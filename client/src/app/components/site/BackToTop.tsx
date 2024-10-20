@@ -6,14 +6,12 @@ import styles from "./BackToTop.module.scss";
 export default function BackToTop() {
     const [isVisible, setIsVisible] = useState<boolean>(false);
 
-    // Hàm để cuộn lên đầu trang
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    // Hiện/ẩn nút khi cuộn
     const handleScroll = () => {
-        if (window.scrollY > 300) { // Hiện nút khi cuộn xuống hơn 300px
+        if (window.scrollY > 300) { 
             setIsVisible(true);
         } else {
             setIsVisible(false);
